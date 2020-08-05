@@ -1,0 +1,55 @@
+doctype 5
+html
+  head
+    style.
+
+      .board_images {
+        grid-template-columns: repeat(13, 4vmin);
+        justify-content: center;
+      }
+
+    title= title
+    input#username(type='hidden', value= player.name) 
+    input#gameid(type='hidden', value= gameid) 
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css", integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js", integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous")  // 위 link와 이 script는 부트스트랩 연결
+    script(src='/socket.io/socket.io.js')
+    script(src='//code.jquery.com/jquery-1.11.1.js')
+    script(src='/javascripts/game.js')
+  
+  include header.ejs
+
+  body
+    center
+      div
+        button.btn.btn-info.deep-blue-gradient(type='button' style={"width": "100%", "height": "7vh"}) 게임방
+      div.container
+        div.row
+          div.board_images.col-md-6
+            - for (var y=0; y<13; y++)
+              - for (var x=0; x<13; x++)
+                image.board(src="../../images/board.png"  id='board_' + x + '_' + y style={"grid-area": (y+1) + " / " + (x+1) + " / " + (y+2) + " / " + (x+2)})
+                image.clickboard.blackboard(src="../../images/black_board.png"  id='blackboard_' + x + '_' + y style={"grid-area": (y+1) + " / " + (x+1) + " / " + (y+2) + " / " + (x+2)})
+                image.clickboard.whiteboard(src="../../images/white_board.png"  id='whiteboard_' + x + '_' + y style={"grid-area": (y+1) + " / " + (x+1) + " / " + (y+2) + " / " + (x+2)})           
+                image.redboard.redblackboard(type='hidden', src="../../images/red_black_board.png"  id='red_blackboard_' + x + '_' + y style={"grid-area": (y+1) + " / " + (x+1) + " / " + (y+2) + " / " + (x+2)})
+                image.redboard.redwhiteboard(type='hidden', src="../../images/red_white_board.png"  id='red_whiteboard_' + x + '_' + y style={"grid-area": (y+1) + " / " + (x+1) + " / " + (y+2) + " / " + (x+2)})
+          div.col-md-4
+            div.form-group
+              label(for='exampleFormControlTextarea1') 채팅창
+              textarea#chatting.form-control.rounded-0(rows='8' readonly style={"resize" : "none"})
+              textarea#sendchatting.md-textarea.form-control(rows='1' style={"resize" : "none"})
+              button#submit.btn.btn-primary(type='submit') 전송
+      div.container
+        div.row
+          div.col-md-6
+            button.btn.btn-primary#start_button(type='button') 게임 시작!
+            button.btn.btn-info#exit(type='button', onclick="location.href='/api/lobby'", style= {"position": "fixed", "bottom": "0", "right": "0", "width": "50%"}) 뒤로 가기
+          div.col-md-6
+      div.container
+        div.row
+          div.turn.col-md-6
+            #turns 
+          div.no.col-md-4
+            #non
+      #box.box

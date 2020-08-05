@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+  <%- include("../menu"); %>
+  <form id=createForm>
+  <!-- Material input -->
+<div class="md-form">
+  <input
+  type="text"
+  id="title"
+  class="form-control"
+  required
+  autocomplete="off"
+  >
+  <label for="title" style="color: blue">방 제목 입력</label>
+  
+</div>
+
+
+<!-- Default inline 1-->
+<div class="custom-control custom-radio custom-control-inline">
+  <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample" onclick="var input = document.getElementById('passwd'); if(this.checked){ input.disabled = true;}" checked>
+  <label class="custom-control-label" for="defaultInline1">일반 방</label>
+</div>
+
+<!-- Default inline 2-->
+<div class="custom-control custom-radio custom-control-inline">
+  <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample"  onclick="var input = document.getElementById('passwd'); if(this.checked){ input.disabled = false;}">
+  <label class="custom-control-label" for="defaultInline2">비밀 방</label>
+  <input id="passwd" required type="text" placeholder="비밀번호 입력" style="margin-left: 20px;" disabled="disabled">
+</div>
+  
+</div>
+
+<br></br>
+<button type="submit" class="btn btn-primary">개설</button>
+</form>
+  <%- include("../footer"); %>
+  <script>
+      $(function() {
+          $("#createForm").submit((event) => {
+              event.preventDefault();
+              // 등록
+              const title = $("#title").val();
+              const passwd = $("#passwd").val();
+              var passwdcheck = true;
+              if (passwd == "") {
+                passwdcheck = false;
+              }
+
+          $.ajax({
+              url: "/api/lobby",
+              type: "POST",
+              data: { title, passwd, passwdcheck },
+          }).done((req) => {
+              location.href = "/api/lobby/" + req._id
+          }).fail((request, status, error) => {
+              alert(request.responseText);
+          });
+          
+      });
+    });
+  </script>
+</body>
+</html>
